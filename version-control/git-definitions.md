@@ -10,3 +10,5 @@
     - A commit is when a new 'save point' is created for a file. The message that accompanies the commit should clearly explain the changes being committed. These messages are written in the present tense. 
 * What is a merge conflict?
     - A merge conflict occurs when there are multiple edits to the same line of code, or if someone is trying to make changes to a file that was deleted.
+
+Thanks!
