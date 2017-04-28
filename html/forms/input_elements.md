@@ -1,3 +1,4 @@
+```
 <fieldset>
     used to group personal login information
 </fieldset>
@@ -25,3 +26,4 @@ placeholder = initial value of input. replaced if any new input is provided
 <button type="submit" - send data to server>
     creates clickable button element
 </button>
+```
