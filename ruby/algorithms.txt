@@ -17,3 +17,24 @@ Elevator Algorithm
 - Wait for elevator to arrive at desired floor.
 - Wait for elevator doors to open.
 - Exit elevator.
+
+
+Fetch Mail Algorithm
+
+- Wait until it is at least 1:00pm.
+- Check day:
+    - If it is Sunday, abort.
+    - Else, continue.
+- Look out window to check weather:
+    - If it is raining, put on rain jacket and shoes, then continue.
+    - If it is raining and windy, abort and restart in 1 hour.
+    - If there is snow on the ground, put on boots, then continue.
+    - If it is clear, just put on shoes.
+- Step outside and navigate to mailbox.
+- Open mailbox:
+    - If there is no mail, abort.
+    - If there is mail, grab it.
+- Navigate to kitchen counter and deposit mail.
+- Check recipient on all mail:
+    - For each mail addressed to me, open it and read for further instructions.
+    - For all other mail, ignore.
