@@ -1,0 +1,40 @@
+Elevator Algorithm
+
+- Approach elevators.
+- Get desired floor:
+    - if desired floor is the same as the current floor, do nothing.
+    - if desired floor is higher than current floor, press the up arrow.
+    - if desired floor is lower than current floor, press the down arrow.
+- Wait for elevator to arrive.
+- When elevator arrives:
+    - If there are occupants in the elevator:
+        - let them exit elevator.
+        - if they do not want to exit elevator:
+            - enter elevator.
+    - If no occupants in elevator:
+        - enter elevator. 
+- On elevator panel, press button that corresponds to desired floor.
+- Wait for elevator to arrive at desired floor.
+- Wait for elevator doors to open.
+- Exit elevator.
+
+
+Fetch Mail Algorithm
+
+- Wait until it is at least 1:00pm.
+- Check day:
+    - If it is Sunday, abort.
+    - Else, continue.
+- Look out window to check weather:
+    - If it is raining, put on rain jacket and shoes, then continue.
+    - If it is raining and windy, abort and restart in 1 hour.
+    - If there is snow on the ground, put on boots, then continue.
+    - If it is clear, just put on shoes.
+- Step outside and navigate to mailbox.
+- Open mailbox:
+    - If there is no mail, abort.
+    - If there is mail, grab it.
+- Navigate to kitchen counter and deposit mail.
+- Check recipient on all mail:
+    - For each mail addressed to me, open it and read for further instructions.
+    - For all other mail, ignore.
