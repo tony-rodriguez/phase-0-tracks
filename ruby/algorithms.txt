@@ -1,0 +1,19 @@
+Elevator Algorithm
+
+- Approach elevators.
+- Get desired floor:
+    - if desired floor is the same as the current floor, do nothing.
+    - if desired floor is higher than current floor, press the up arrow.
+    - if desired floor is lower than current floor, press the down arrow.
+- Wait for elevator to arrive.
+- When elevator arrives:
+    - If there are occupants in the elevator:
+        - let them exit elevator.
+        - if they do not want to exit elevator:
+            - enter elevator.
+    - If no occupants in elevator:
+        - enter elevator. 
+- On elevator panel, press button that corresponds to desired floor.
+- Wait for elevator to arrive at desired floor.
+- Wait for elevator doors to open.
+- Exit elevator.
