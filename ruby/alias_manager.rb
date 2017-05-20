@@ -50,4 +50,20 @@ def create_alias(name)
   rejoin(next_letter(split_name(swap(name))))
 end
 
-p create_alias("Felicia Torres")
+secret_agents = {}
+
+puts "Enter the name of each agent. When you are finished, type 'quit'."
+
+input = gets.chomp
+
+until input.downcase == 'quit'
+  new_alias = create_alias(input)
+  puts "#{input} is now #{new_alias}."
+  secret_agents[input] = new_alias
+  print "Enter the next name (or 'quit'): "
+  input = gets.chomp
+end
+
+puts '-'*40
+
+secret_agents.each { |name, secret| puts "#{name} is also known as #{secret}."}
