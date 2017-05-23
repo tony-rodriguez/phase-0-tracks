@@ -39,10 +39,41 @@ def create_list(items)
   groceries.each do |grocery|
     grocery_list[grocery] = 1
   end
+  print_list(grocery_list)
   return grocery_list
 end
 
-arr = "stuff thing item carrot apple"
+def add_item(list, item_name, quantity = 1)
+  list[item_name] = quantity
+  return list
+end
 
-p create_list(arr)
+def remove_item(list, item_name)
+  list.delete(item_name)
+  return list
+end
+
+def update_quantity(list, item_name, quantity)
+  list[item_name]=quantity
+  return list
+end
+
+def print_list(list)
+  list.each do |item, quantity|
+    puts "#{item}: #{quantity}"
+  end
+  puts "-" *30
+end
+
+new_list = "lemonade onions tomato ice-cream"
+items_hash = create_list(new_list)
+update_quantity(items_hash,"lemonade", 2)
+update_quantity(items_hash, "tomato", 3)
+update_quantity(items_hash, "ice-cream", 4)
+remove_item(items_hash, "lemonade")
+update_quantity(items_hash, "ice-cream", 1)
+
+
+print_list(items_hash)
+
 
