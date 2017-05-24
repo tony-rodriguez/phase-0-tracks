@@ -73,7 +73,17 @@ update_quantity(items_hash, "ice-cream", 4)
 remove_item(items_hash, "lemonade")
 update_quantity(items_hash, "ice-cream", 1)
 
-
 print_list(items_hash)
 
+=begin
+---REFLECT---
 
+- In this challenge, we used a more developed pseudocode than what I am used to. I learned that by putting more effort and information in the pseudocode, it saves effort when you are writing the actual code.
+
+- by using arrays and hashes we are not able to define all of these methods within a class that could be created specifically for this type of grocery list. This makes the grocery list a little more cumbersome to work with.
+
+- A method implicitly returns the last line it evaluated, however you can dictate what it returns by using the return keyword.
+
+- You can pass all kinds of things into methods as arguments. This includes integers, strings, booleans, arrays, hashes, etc.
+
+- I feel that this challenge solidified what we learned about working with and manipulating hashes, however I still feel like I have some room to improve when it comes to passing blocks into method and the most effective ways to use them.
