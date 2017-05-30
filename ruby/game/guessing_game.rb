@@ -31,6 +31,7 @@ class GuessingGame
       @remaining_guesses -= 1
       @already_guessed << letter
       if @word.include? letter
+        puts "Good guess!"
         insert_letter(letter)
       else
         puts "No luck!"
@@ -42,7 +43,7 @@ class GuessingGame
   end
 
   def insert_letter(letter)
-    @correct_indices = @word.each_index.select { |i| @word[i] == letter}
+    @correct_indices = @word.each_index.select { |i| @word[i] == letter }
     @correct_indices.each do |i|
       @current[i] = letter
     end
@@ -61,7 +62,7 @@ class GuessingGame
   end
 
   def victory
-    puts "Congrats, you won with #{@remaining_guesses} guesses to spare!"
+    puts "Congrats, you won with #{@remaining_guesses} guess(es) to spare!"
     @game_complete = true
   end
 
