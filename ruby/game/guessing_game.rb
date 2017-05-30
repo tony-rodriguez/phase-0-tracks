@@ -10,7 +10,7 @@
 # Guesses are limited to 2x the length of the original word
 
 class GuessingGame
-  attr_reader :remaining_guesses, :current, :word
+  attr_reader :remaining_guesses, :current, :word, :game_complete
 
   def initialize(word)
     @word = word.split('')
@@ -18,6 +18,7 @@ class GuessingGame
     @already_guessed = []
     @current = []
     @word.length.times { @current << '_' }
+    @game_complete = false
   end
 
   def guess_check(letter)
@@ -32,6 +33,9 @@ class GuessingGame
         puts "Guess again!"
       end
     end
+    if @remaining_guesses == 0
+        loss
+    end
   end
 
   def insert_letter(letter)
@@ -39,11 +43,26 @@ class GuessingGame
     @correct_indices.each do |i|
       @current[i] = letter
     end
+    # check if word is complete after each time a letter is inserted
+    if !@current.include? '_'
+      victory
+    end
   end
 
   def display
-    print @current
+    puts @current.join('')
     puts "You have #{@remaining_guesses} guesses left."
+    puts "-"*40
+  end
+
+  def victory
+    puts "Congrats, you won with #{@remaining_guesses} guesses to spare!"
+    @game_complete = true
+  end
+
+  def loss
+    puts "Ha, you ran out of guesses and lost! Try to do better next time."
+    @game_complete = true
   end
 end
 
@@ -51,11 +70,11 @@ puts "Enter word for guessing game"
 word = gets.chomp
 test = GuessingGame.new(word)
 puts "Info about new game:"
-print test.word
+p test.word
 puts test.remaining_guesses
-print test.current
+p test.current
 
-until test.remaining_guesses == 0
+while !test.game_complete
   puts "Guess letter pls"
   guess = gets.chomp
   test.guess_check(guess)
