@@ -7,18 +7,21 @@
 # reassign values of display array with the correct letter at the indices where a guess letter appears in original word
 # when a guess is inputted, check the array containing guesses to make sure it wasn't already guessed
 # if a guess is repeated, do not count it towards the limit and display a message notifying the user
-# Guesses are limited to 2x the length of the original word
+# Guesses are limited to the length of the original word + 4
 
 class GuessingGame
-  attr_reader :remaining_guesses, :current, :word, :game_complete
+  attr_reader :game_complete
 
   def initialize(word)
-    @word = word.split('')
-    @remaining_guesses = (@word.length * 2)
+    @word = word.downcase.split('')
+    @remaining_guesses = @word.length + 4
     @already_guessed = []
     @current = []
     @word.length.times { @current << '_' }
     @game_complete = false
+    puts ".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n."
+    puts "New game started! Try to guess letters to fill in all the blanks.\nYour mystery word is below:"
+    display
   end
 
   def guess_check(letter)
@@ -30,10 +33,10 @@ class GuessingGame
       if @word.include? letter
         insert_letter(letter)
       else
-        puts "Guess again!"
+        puts "No luck!"
       end
     end
-    if @remaining_guesses == 0
+    if @remaining_guesses == 0 && @game_complete == false
         loss
     end
   end
@@ -51,8 +54,10 @@ class GuessingGame
 
   def display
     puts @current.join('')
-    puts "You have #{@remaining_guesses} guesses left."
-    puts "-"*40
+    if !game_complete
+      puts "You have #{@remaining_guesses} guesses left."
+    end
+    puts "="*80
   end
 
   def victory
@@ -61,7 +66,7 @@ class GuessingGame
   end
 
   def loss
-    puts "Ha, you ran out of guesses and lost! Try to do better next time."
+    puts "Ha, you ran out of guesses and lost! Do better next time."
     @game_complete = true
   end
 end
@@ -69,15 +74,11 @@ end
 puts "Enter word for guessing game"
 word = gets.chomp
 test = GuessingGame.new(word)
-puts "Info about new game:"
-p test.word
-puts test.remaining_guesses
-p test.current
 
-while !test.game_complete
-  puts "Guess letter pls"
+until test.game_complete
+  print "Guess a letter: "
   guess = gets.chomp
   test.guess_check(guess)
-  puts "Current status:"
+  puts "Current status of word:"
   test.display
 end
