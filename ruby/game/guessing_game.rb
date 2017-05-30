@@ -14,7 +14,7 @@ class GuessingGame
 
   def initialize(word)
     @word = word.downcase.split('')
-    @remaining_guesses = @word.length + 4
+    @remaining_guesses = @word.length + 3
     @already_guessed = []
     @current = []
     @word.length.times { @current << '_' }
@@ -27,6 +27,7 @@ class GuessingGame
   def guess_check(letter)
     if @already_guessed.include? letter
       puts "You've already guessed that letter! Try a different one."
+      return "You've already guessed that letter! Try a different one."
     else
       @remaining_guesses -= 1
       @already_guessed << letter
@@ -54,11 +55,12 @@ class GuessingGame
   end
 
   def display
-    puts @current.join('')
+    puts @current.join
     if !game_complete
       puts "You have #{@remaining_guesses} guesses left."
     end
     puts "="*80
+    @current.join
   end
 
   def victory
@@ -72,6 +74,7 @@ class GuessingGame
   end
 end
 
+# ---Driver code for guessing game (comment out if testing)---
 puts "Enter word for guessing game"
 word = gets.chomp
 test = GuessingGame.new(word)
