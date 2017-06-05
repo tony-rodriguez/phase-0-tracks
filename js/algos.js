@@ -91,4 +91,11 @@ function randomStrings(iterations) {
 // console.log(objectMatchChecker({name: "Steven", age: 54}, {name: "Tamir", age: 54}));
 // console.log(objectMatchChecker({animal: "Dog", legs: 4}, {animal: "Dog", legs: 3}));
 
-console.log(randomStrings(10))
+// Driver code for randomStrings function
+for(count=0; count < 10; count++) {
+  var random_ary = randomStrings(Math.floor((Math.random() * 10) + 1));
+  console.log("Here is a randomly generated array:")
+  console.log(random_ary);
+  console.log("The longest word from the above array is: " + longestPhrase(random_ary));
+  console.log("-------------------------------------");
+}
