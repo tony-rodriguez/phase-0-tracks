@@ -1,0 +1,21 @@
+sqlite> SELECT *  FROM reviews LEFT JOIN users ON reviews.user_id=users.id LEFT JOIN businesses ON reviews.business_id=businesses.id; 
+1|5|Great food!|1|1|1|Bradford|Pitt|1|Grundy Hollow Wedding Chapel
+2|2|Slow service|3|4|4|Steven|Wonder|3|The Beagle Nightclub
+3|1|Fly in my soup|2|3|3|Angela|Jolie|2|Amir's Towing
+4|3|Totally mediocre|4|2|2|Mandy|Kaling|4|Lotus Yoga
+
+
+
+sqlite> SELECT users.first_name, users.last_name, businesses.name, reviews.stars, reviews.comment FROM reviews LEFT JOIN businesses ON reviews.business_id=businesses.id LEFT JOIN users ON reviews.user_id=users.id;
+Bradford|Pitt|Grundy Hollow Wedding Chapel|5|Great food!
+Steven|Wonder|The Beagle Nightclub|2|Slow service
+Angela|Jolie|Amir's Towing|1|Fly in my soup
+Mandy|Kaling|Lotus Yoga|3|Totally mediocre
+
+
+sqlite> SELECT users.first_name, users.last_name, businesses.name, reviews.stars, reviews.comment FROM reviews LEFT JOIN businesses ON reviews.business_id=businesses.id LEFT JOIN users ON reviews.user_id=users.id WHERE businesses.id=1;
+Bradford|Pitt|Grundy Hollow Wedding Chapel|5|Great food!
+
+
+
+
