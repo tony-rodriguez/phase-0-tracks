@@ -43,10 +43,9 @@ def display_posts(database)
   end
 end
 
-def new_post(database, name, title, content)
-  puts "name: #{name}"
-  puts "title: #{title}"
-  puts "content: #{content}"
+def new_post(database, auth_name, new_title, new_content)
+  database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [new_title, auth_name, new_content]
+    )
 end
 
 puts "Hi! Welcome to my blog. Below is the menu. If you'd like to see this menu again later, type in 'menu'."
