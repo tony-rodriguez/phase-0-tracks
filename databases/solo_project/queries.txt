@@ -1,0 +1,72 @@
+8.3 Solo Challenge 
+---Release 2: Execute SQL Queries---
+
+1) sqlite> SELECT * FROM produce;
+1|Cucumber|green|false|2
+2|Banana|yellow|true|1
+3|Bell Pepper|yellow|true|2
+4|Chives|green|false|3
+5|Plum|purple|false|1
+6|Cauliflower|white|true|2
+7|Cilantro|green|true|3
+8|Radish|red|false|2
+9|Apple|red|true|1
+10|Spaghetti Squash|yellow|false|2
+
+2) sqlite> UPDATE produce SET color="orange" WHERE id=3;
+--No Output--
+
+3) sqlite> SELECT * FROM produce JOIN types ON produce.type_id=types.id;
+1|Cucumber|green|false|2|2|vegetables
+2|Banana|yellow|true|1|1|fruit
+3|Bell Pepper|orange|true|2|2|vegetables
+4|Chives|green|false|3|3|herbs
+5|Plum|purple|false|1|1|fruit
+6|Cauliflower|white|true|2|2|vegetables
+7|Cilantro|green|true|3|3|herbs
+8|Radish|red|false|2|2|vegetables
+9|Apple|red|true|1|1|fruit
+10|Spaghetti Squash|yellow|false|2|2|vegetables
+
+4) sqlite> SELECT produce.name, produce.color, produce.organic, types.name FROM produce JOIN types ON produce.type_id=types.id;
+Cucumber|green|false|vegetables
+Banana|yellow|true|fruit
+Bell Pepper|orange|true|vegetables
+Chives|green|false|herbs
+Plum|purple|false|fruit
+Cauliflower|white|true|vegetables
+Cilantro|green|true|herbs
+Radish|red|false|vegetables
+Apple|red|true|fruit
+Spaghetti Squash|yellow|false|vegetables
+
+5) DELETE FROM produce WHERE color="red" AND type_id=1;
+--No Output--
+
+---Release 3: Research on Your Own---
+
+sqlite> SELECT types.name, produce.name, produce.color FROM types LEFT JOIN produce ON types.id=produce.type_id;
+
+fruit|Banana|yellow
+fruit|Plum|purple
+vegetables|Bell Pepper|orange
+vegetables|Cauliflower|white
+vegetables|Cucumber|green
+vegetables|Radish|red
+vegetables|Spaghetti Squash|yellow
+herbs|Chives|green
+herbs|Cilantro|green
+
+sqlite> SELECT produce.name, produce.color, types.name, produce.type_id FROM produce INNER JOIN types ON produce.type_id=types.id;
+
+Cucumber|green|vegetables|2
+Banana|yellow|fruit|1
+Bell Pepper|orange|vegetables|2
+Chives|green|herbs|3
+Plum|purple|fruit|1
+Cauliflower|white|vegetables|2
+Cilantro|green|herbs|3
+Radish|red|vegetables|2
+Spaghetti Squash|yellow|vegetables|2
+
+** RIGHT JOIN and OUTER JOIN not supported ** 
