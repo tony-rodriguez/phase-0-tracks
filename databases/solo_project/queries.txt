@@ -1,4 +1,5 @@
-8.3 Solo Challenge - Release 2: Execute SQL Queries
+8.3 Solo Challenge 
+---Release 2: Execute SQL Queries---
 
 1) sqlite> SELECT * FROM produce;
 1|Cucumber|green|false|2
@@ -41,3 +42,31 @@ Spaghetti Squash|yellow|false|vegetables
 
 5) DELETE FROM produce WHERE color="red" AND type_id=1;
 --No Output--
+
+---Release 3: Research on Your Own---
+
+sqlite> SELECT types.name, produce.name, produce.color FROM types LEFT JOIN produce ON types.id=produce.type_id;
+
+fruit|Banana|yellow
+fruit|Plum|purple
+vegetables|Bell Pepper|orange
+vegetables|Cauliflower|white
+vegetables|Cucumber|green
+vegetables|Radish|red
+vegetables|Spaghetti Squash|yellow
+herbs|Chives|green
+herbs|Cilantro|green
+
+sqlite> SELECT produce.name, produce.color, types.name, produce.type_id FROM produce INNER JOIN types ON produce.type_id=types.id;
+
+Cucumber|green|vegetables|2
+Banana|yellow|fruit|1
+Bell Pepper|orange|vegetables|2
+Chives|green|herbs|3
+Plum|purple|fruit|1
+Cauliflower|white|vegetables|2
+Cilantro|green|herbs|3
+Radish|red|vegetables|2
+Spaghetti Squash|yellow|vegetables|2
+
+** RIGHT JOIN and OUTER JOIN not supported ** 
