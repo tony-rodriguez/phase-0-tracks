@@ -53,7 +53,7 @@ def new_post(database)
     content = gets.chomp
   end
   unless content.nil? || content.downcase == 'cancel'
-    database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [new_title, auth_name, new_content])
+    database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [title, author_name, content])
   end
 end
 
@@ -76,15 +76,19 @@ def search_blog(database)
   end
 end
 
-def search_by_author(database)
-  puts "Enter the name of the author you are looking for:"
-  search_name = gets.chomp
+def search_by_author(database, search_name='')
+  #if a name is not already passed in, ask the user for it
+  if search_name == ''
+    puts "Enter the name of the author you are looking for:"
+    search_name = gets.chomp
+  end
   results = database.execute('SELECT * FROM blog WHERE author=?', [search_name])
   if !results.empty?
     display_posts(database, results)
   else
     puts "Sorry, I couldn't find any posts with that author!"
   end
+  results
 end
 
 def search_by_id(database)
@@ -96,6 +100,7 @@ def search_by_id(database)
   else
     puts "Sorry, I couldn't find any posts with that id!"
   end
+  result
 end
 
 def search_by_date(database)
@@ -107,6 +112,7 @@ def search_by_date(database)
   else
     puts "Sorry, I couldn't find any posts with that date!"
   end
+  results
 end
 
 def search_by_title(database)
@@ -119,10 +125,40 @@ def search_by_title(database)
   else
     puts "Sorry, I couldn't find any posts with that term in the title!"
   end
+  posts
 end
 
-def edit_post(database, id, new_value)
-
+def edit_post(database)
+  puts "Please enter your name so that your post(s) can be displayed"
+  author_name = gets.chomp
+  posts = search_by_author(database, author_name)
+  # need to narrow it down to one post (if the user has more than one prior posts)
+  if posts.length > 1
+    puts "You have more than one post. Please enter the ID of the post you would like to edit:"
+    post_id = gets.chomp.to_i
+    posts.keep_if { |post| post['id'] == post_id }
+  elsif posts.length == 0
+    puts "You don't have any posts to edit!"
+    return
+  end
+  puts "Would you like to edit the title or the content?"
+  field_to_edit = gets.chomp.downcase
+  while true
+    if field_to_edit == 'title'
+      puts "Please enter the updated title for your post"
+      updated_value = gets.chomp
+      database.execute('UPDATE blog SET title=? WHERE id=?', [updated_value, posts[0]['id']])
+      return
+    elsif field_to_edit == 'content'
+      puts "Please enter the updated content for your post"
+      updated_value = gets.chomp
+      database.execute('UPDATE blog SET content=? WHERE id=?', [updated_value, posts[0]['id']])
+      return
+    else
+      puts "Sorry, you can only edit the title or content. Please enter your choice:"
+      field_to_edit = gets.chomp.downcase
+    end
+  end
 end
 
 
@@ -135,12 +171,12 @@ until input == 'quit' do
   elsif input == 'read'
     display_posts(db)
   elsif input == 'write'
-      new_post(db)
+    new_post(db)
   elsif input == 'edit'
-    search_blog(db)
+    edit_post(db)
   elsif input == 'search'
     search_blog(db)
-  else puts "Sorry, that command was invalid. Refer to the menu for valid options. Please try again:"
+  else puts "Sorry, that command was invalid. Refer to the menu for valid options. Please enter another command:"
   end
   input = gets.chomp.downcase
 end
