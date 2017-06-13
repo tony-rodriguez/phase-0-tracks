@@ -55,6 +55,7 @@ def new_post(database)
   unless content.nil? || content.downcase == 'cancel'
     database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [title, author_name, content])
   end
+  puts "Success! your post is now on the blog."
 end
 
 # this method determines what type of search the user wants, then calls the correct search method
@@ -128,17 +129,26 @@ def search_by_title(database)
   posts
 end
 
-def edit_post(database)
+# this method is used by other methods to narrow down an individual post that the user wants to manipulate
+# this method only allows users to manipulate posts that they have authored
+def find_post(database)
   puts "Please enter your name so that your post(s) can be displayed"
   author_name = gets.chomp
-  posts = search_by_author(database, author_name)
+  post = search_by_author(database, author_name)
   # need to narrow it down to one post (if the user has more than one prior posts)
-  if posts.length > 1
-    puts "You have more than one post. Please enter the ID of the post you would like to edit:"
+  if post.length > 1
+    puts "You have more than one post. Please enter the ID of the post you would like to access:"
     post_id = gets.chomp.to_i
-    posts.keep_if { |post| post['id'] == post_id }
-  elsif posts.length == 0
+    post.keep_if { |post| post['id'] == post_id }
+  elsif post.length == 0
     puts "You don't have any posts to edit!"
+  end
+  post
+end
+
+def edit_post(database)
+  post = find_post(database)
+  if post.length == 0
     return
   end
   puts "Would you like to edit the title or the content?"
@@ -161,8 +171,22 @@ def edit_post(database)
   end
 end
 
+def remove_post(database)
+  post = find_post(database)
+  if post.length == 0
+    return
+  end
+  puts "Are you sure you want to delete this post? (y/n)"
+  confirmation = gets.chomp.downcase
+  if confirmation == 'y' || confirmation == 'yes'
+    database.execute('DELETE FROM blog WHERE id=?', [post[0]['id']])
+    puts "Post removed!"
+  else
+    puts "Ok, your post was not removed."
+  end
+end
 
-puts "Hi! Welcome to my blog. Below is the menu. If you'd like to see this menu again later, type in 'menu'."
+puts "Hi! Welcome to my blog. Below is the menu. Remember: if you'd like to see this menu again later, type in 'menu'."
 display_menu
 input = gets.chomp.downcase
 until input == 'quit' do
@@ -176,6 +200,8 @@ until input == 'quit' do
     edit_post(db)
   elsif input == 'search'
     search_blog(db)
+  elsif input == 'remove'
+    remove_post(db)
   else puts "Sorry, that command was invalid. Refer to the menu for valid options. Please enter another command:"
   end
   input = gets.chomp.downcase
