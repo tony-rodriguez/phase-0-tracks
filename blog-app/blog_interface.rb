@@ -48,6 +48,7 @@ def new_post(database, auth_name, new_title, new_content)
     )
 end
 
+# this method determines what type of search the user wants, then calls the correct search method
 def search_blog(database)
   puts "Please select a search option:"
   puts "To find all posts by an author, enter 'author'"
@@ -56,23 +57,44 @@ def search_blog(database)
   puts "To find a post by title, enter 'title'"
   search_type = gets.chomp.downcase
   if search_type == 'author'
-    puts "Enter the name of the author you are looking for:"
-    search_name = gets.chomp
-    results = database.execute('SELECT * FROM blog WHERE author=?', [search_name])
-    if !results.empty?
-      display_posts(database, results)
-    else
-      puts "Sorry, I couldn't find any posts with that author!"
-    end
+    search_by_author(database)
   elsif search_type == 'id'
-    puts 'Enter the id of the post you are looking for:'
-    search_id = gets.chomp.to_i
-    result = database.execute('SELECT * FROM blog WHERE id=?', [search_id])
-    if !result.empty?
-      display_posts(database, result)
-    else
-      puts "Sorry, I couldn't find any posts with that id!"
-    end
+    search_by_id(database)
+  elsif search_type == 'date'
+    search_by_date(database)
+  end
+end
+
+def search_by_author(database)
+  puts "Enter the name of the author you are looking for:"
+  search_name = gets.chomp
+  results = database.execute('SELECT * FROM blog WHERE author=?', [search_name])
+  if !results.empty?
+    display_posts(database, results)
+  else
+    puts "Sorry, I couldn't find any posts with that author!"
+  end
+end
+
+def search_by_id(database)
+  puts "Enter the id of the post you are looking for:"
+  search_id = gets.chomp.to_i
+  result = database.execute('SELECT * FROM blog WHERE id=?', [search_id])
+  if !result.empty?
+    display_posts(database, result)
+  else
+    puts "Sorry, I couldn't find any posts with that id!"
+  end
+end
+
+def search_by_date(database)
+  puts "Enter the date of the post(s) you are looking for (YYYY-MM-DD):"
+  search_date = gets.chomp
+  results = database.execute('SELECT * FROM blog WHERE post_date=?', [search_date])
+  if !results.empty?
+    display_posts(database, results)
+  else
+    puts "Sorry, I couldn't find any posts with that date!"
   end
 end
 
