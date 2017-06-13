@@ -23,7 +23,7 @@ db.execute(create_table_cmd)
 def display_menu
   puts "Menu options: type the keyword of your choice"
   puts "-"*35
-  puts "Read - see previous blog posts"
+  puts "Read - see all previous blog posts"
   puts "Write - create your own blog post"
   puts "Search - look for a specific blog post"
   puts "Edit - change something about a post"
@@ -32,11 +32,11 @@ def display_menu
   puts "-"*35
 end
 
-def display_posts(database)
-  blog_data = database.execute('SELECT * FROM blog')
-  blog_data.each do |post|
+def display_posts(database, posts = database.execute('SELECT * FROM blog'))
+  # blog_data = database.execute('SELECT * FROM blog')
+  posts.each do |post|
     # puts '-'*35
-    puts "Post No.: #{post['id']} Date: #{post['post_date']} Title: #{post['title']} "
+    puts "Post ID: #{post['id']} Date: #{post['post_date']} Title: #{post['title']} "
     puts "Author: #{post['author']}"
     puts post['content']
     puts '-'*35
@@ -47,6 +47,39 @@ def new_post(database, auth_name, new_title, new_content)
   database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [new_title, auth_name, new_content]
     )
 end
+
+def search_blog(database)
+  puts "Please select a search option:"
+  puts "To find all posts by an author, enter 'author'"
+  puts "To find a post by its id, enter 'id'"
+  puts "To find a post by date of posting, enter 'date'"
+  puts "To find a post by title, enter 'title'"
+  search_type = gets.chomp.downcase
+  if search_type == 'author'
+    puts "Enter the name of the author you are looking for:"
+    search_name = gets.chomp
+    results = database.execute('SELECT * FROM blog WHERE author=?', [search_name])
+    if !results.empty?
+      display_posts(database, results)
+    else
+      puts "Sorry, I couldn't find any posts with that author!"
+    end
+  elsif search_type == 'id'
+    puts 'Enter the id of the post you are looking for:'
+    search_id = gets.chomp.to_i
+    result = database.execute('SELECT * FROM blog WHERE id=?', [search_id])
+    if !result.empty?
+      display_posts(database, result)
+    else
+      puts "Sorry, I couldn't find any posts with that id!"
+    end
+  end
+end
+
+def edit_post(database, id, new_value)
+
+end
+
 
 puts "Hi! Welcome to my blog. Below is the menu. If you'd like to see this menu again later, type in 'menu'."
 display_menu
@@ -74,7 +107,11 @@ until input == 'quit' do
     unless content.nil? || content.downcase == 'cancel'
       new_post(db, author_name, title, content)
     end
-  else puts "Sorry, your input doesn't seem to be valid. Refer to the menu for valid options. Please try again: "
+  elsif input == 'edit'
+    search_blog(db)
+  elsif input == 'search'
+    search_blog(db)
+  else puts "Sorry, that command was invalid. Refer to the menu for valid options. Please try again:"
   end
   input = gets.chomp.downcase
 end
