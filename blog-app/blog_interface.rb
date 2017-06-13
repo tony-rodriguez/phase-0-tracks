@@ -15,25 +15,19 @@ SQL
 
 db.execute(create_table_cmd)
 
-# insert_test = <<-SQL
-#   INSERT INTO blog (title, author, post_date, content) VALUES
-#   ('First Post!', 'Tony Rodriguez', date('now'), "I hope this works!")
-# SQL
-
 def display_menu
-  puts "Menu options: type the keyword of your choice"
+  puts "Menu options: enter the keyword of your choice"
   puts "-"*35
   puts "Read - see all previous blog posts"
   puts "Write - create your own blog post"
   puts "Search - look for a specific blog post"
   puts "Edit - change something about a post"
-  puts "Remove - delete a post of yours"
+  puts "Remove - delete a prior post of yours"
   puts "Quit - leave this blog"
   puts "-"*35
 end
 
 def display_posts(database, posts = database.execute('SELECT * FROM blog'))
-  # blog_data = database.execute('SELECT * FROM blog')
   posts.each do |post|
     # puts '-'*35
     puts "Post ID: #{post['id']} Date: #{post['post_date']} Title: #{post['title']} "
@@ -43,9 +37,24 @@ def display_posts(database, posts = database.execute('SELECT * FROM blog'))
   end
 end
 
-def new_post(database, auth_name, new_title, new_content)
-  database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [new_title, auth_name, new_content]
-    )
+def new_post(database)
+  puts '-'*35
+  puts "Thank you for contributing! The following prompts will guide you through the process of authoring a post. Type 'cancel' at any step to escape this process."
+  puts
+  puts "How would you like your name to appear (as author)?"
+  author_name = gets.chomp
+  unless author_name.downcase == 'cancel'
+    puts "What would you like the title of your post to be?"
+    title = gets.chomp
+  end
+  # must check for nil in the event that user enters cancel before prompted for title or content
+  unless title.nil? || title.downcase == 'cancel'
+    puts "Paste or type your content:"
+    content = gets.chomp
+  end
+  unless content.nil? || content.downcase == 'cancel'
+    database.execute("INSERT INTO blog (title, author, post_date, content) VALUES (?, ?, date('now'), ?)", [new_title, auth_name, new_content])
+  end
 end
 
 # this method determines what type of search the user wants, then calls the correct search method
@@ -62,6 +71,8 @@ def search_blog(database)
     search_by_id(database)
   elsif search_type == 'date'
     search_by_date(database)
+  elsif search_type == 'title'
+    search_by_title(database)
   end
 end
 
@@ -98,6 +109,18 @@ def search_by_date(database)
   end
 end
 
+def search_by_title(database)
+  puts "Enter the title (or part of the title) of the post you are looking for:"
+  search_term = gets.chomp.downcase
+  posts = database.execute('SELECT * FROM blog')
+  posts.keep_if { |post| post['title'].downcase.include?(search_term) }
+  if !posts.empty?
+    display_posts(database, posts)
+  else
+    puts "Sorry, I couldn't find any posts with that term in the title!"
+  end
+end
+
 def edit_post(database, id, new_value)
 
 end
@@ -112,23 +135,7 @@ until input == 'quit' do
   elsif input == 'read'
     display_posts(db)
   elsif input == 'write'
-    puts '-'*35
-    puts "Thank you for contributing! The following prompts will guide you through the process of authoring a post. Type 'cancel' at any step to escape this process."
-    puts
-    puts "How would you like your name to appear (as author)?"
-    author_name = gets.chomp
-    unless author_name.downcase == 'cancel'
-      puts "What would you like the title of your post to be?"
-      title = gets.chomp
-    end
-    # must check for nil in the event that user enters cancel before prompted for title or content
-    unless title.nil? || title.downcase == 'cancel'
-      puts "Paste or type your content:"
-      content = gets.chomp
-    end
-    unless content.nil? || content.downcase == 'cancel'
-      new_post(db, author_name, title, content)
-    end
+      new_post(db)
   elsif input == 'edit'
     search_blog(db)
   elsif input == 'search'
