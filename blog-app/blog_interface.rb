@@ -36,7 +36,7 @@ def display_posts(database, posts = database.execute('SELECT * FROM blog'))
   # blog_data = database.execute('SELECT * FROM blog')
   posts.each do |post|
     # puts '-'*35
-    puts "Post No.: #{post['id']} Date: #{post['post_date']} Title: #{post['title']} "
+    puts "Post ID: #{post['id']} Date: #{post['post_date']} Title: #{post['title']} "
     puts "Author: #{post['author']}"
     puts post['content']
     puts '-'*35
@@ -62,7 +62,16 @@ def search_blog(database)
     if !results.empty?
       display_posts(database, results)
     else
-      p "Sorry, I couldn't find any posts with that author!"
+      puts "Sorry, I couldn't find any posts with that author!"
+    end
+  elsif search_type == 'id'
+    puts 'Enter the id of the post you are looking for:'
+    search_id = gets.chomp.to_i
+    result = database.execute('SELECT * FROM blog WHERE id=?', [search_id])
+    if !result.empty?
+      display_posts(database, result)
+    else
+      puts "Sorry, I couldn't find any posts with that id!"
     end
   end
 end
@@ -70,7 +79,6 @@ end
 def edit_post(database, id, new_value)
 
 end
-
 
 
 puts "Hi! Welcome to my blog. Below is the menu. If you'd like to see this menu again later, type in 'menu'."
