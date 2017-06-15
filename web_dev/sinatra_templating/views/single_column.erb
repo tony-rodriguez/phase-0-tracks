@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display a Single Column</title>
+</head>
+<body>
+  <h1>Display a Single Column of Data from Student Database</h1>
+  <ul>
+    <% @column.each do |row| %>
+    <li><%= row %></li>
+    <% end %>
+  </ul>
+</body>
+</html>
