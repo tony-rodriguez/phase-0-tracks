@@ -17,6 +17,13 @@ get '/students/new' do
   erb :new_student
 end
 
+# display data from a single column from students
+get '/students/:attribute' do
+  @column_type = params['attribute']
+  @column = db.execute("SELECT #{@column_type} FROM students")
+  erb :single_column
+end
+
 # create new students via
 # a form
 post '/students' do

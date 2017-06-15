@@ -5,10 +5,15 @@
 </head>
 <body>
   <h1>Display a Single Column of Data from Student Database</h1>
-  <ul>
+  <table border="1px">
+    <tr>
+      <th><strong><%= @column_type.upcase %></strong></th>
+    </tr>
     <% @column.each do |row| %>
-    <li><%= row %></li>
+      <tr>
+        <td><%= row[0] %></td>
+      </tr>
     <% end %>
-  </ul>
+  </table>
 </body>
 </html>
