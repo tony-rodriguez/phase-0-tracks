@@ -54,6 +54,7 @@ get '/contact' do
   "<h1>Contact</h1><br><h2>Address</h2><br>#{address}<br>#{city}, #{state}"
 end
 
+# write a GET route that retrieves a simple string with optional query parameter
 get '/great_job' do
   name = params[:name]
   if name
@@ -61,4 +62,10 @@ get '/great_job' do
   else
     "Good job!"
   end
+end
+
+# write a GET route that uses route parameters to add two numbers and respond with the result
+get '/:number1/:number2' do
+  result = params[:number1].to_i + params[:number2].to_i
+  "The sum of #{params[:number1]} and #{params[:number2]} is #{result.to_s}."
 end
