@@ -47,4 +47,14 @@ post '/search_results' do
   end
 end
 
+# use for to allow user to enter name of student they wish to delete
+get '/students/delete' do
+  erb :delete_student
+end
+
+post '/deleted_student' do
+  db.execute('DELETE FROM students WHERE name=?',[params['name']])
+  redirect '/'
+end
+
 # add static resources
