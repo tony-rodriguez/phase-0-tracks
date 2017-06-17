@@ -69,3 +69,23 @@ get '/:number1/:number2' do
   result = params[:number1].to_i + params[:number2].to_i
   "The sum of #{params[:number1]} and #{params[:number2]} is #{result.to_s}."
 end
+
+# Make a route that allows the user to search the database in some way -- maybe for students who have a certain first name, or some other attribute
+
+get '/students/search_by_name/:name' do
+  results = db.execute("SELECT * FROM students")
+  results.keep_if { |student| student['name'].downcase.include? params['name'].downcase}
+  response = ''
+  if !results.empty?
+    "Search result:<br><br>"
+    results.each do |student|
+      response << "ID: #{student['id']}<br>"
+      response << "Name: #{student['name']}<br>"
+      response << "Age: #{student['age']}<br>"
+      response << "Campus: #{student['campus']}<br><br>"
+    end
+  else
+    response << "Sorry, there is no student with that name!"
+  end
+  response
+end
