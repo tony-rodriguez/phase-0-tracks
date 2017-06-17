@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display a Single Column</title>
+</head>
+<body>
+  <h1>Display a Single Column of Data from Student Database</h1>
+  <table border="1px">
+    <tr>
+      <th><strong><%= @column_type.upcase %></strong></th>
+    </tr>
+    <% @column.each do |row| %>
+      <tr>
+        <td><%= row[0] %></td>
+      </tr>
+    <% end %>
+  </table>
+  <p><a href="/">Home</a></p>
+</body>
+</html>
